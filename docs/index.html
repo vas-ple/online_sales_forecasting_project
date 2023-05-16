@@ -1514,7 +1514,9 @@ border-radius: 0px;
 </div>
 
 
-<div style="page-break-after: always;"></div>
+<p><br />
+<br />
+</p>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>Forecasting is required in many situations, for example deciding
@@ -1622,7 +1624,9 @@ team at the Department of Econometrics &amp; Business Statistics, Monash
 University, Australia. A lot of the code and theory in this analysis has
 been adapted and inspired from the The <a href="https://otexts.com/fpp3/">Forecasting Principles and Practice 3rd
 ed</a>, online textbook produced by the same team.</p>
-<div style="page-break-after: always;"></div>
+<p><br />
+<br />
+</p>
 </div>
 <div id="exploratory-analysis" class="section level1">
 <h1>Exploratory Analysis</h1>
@@ -1647,6 +1651,8 @@ identify and either remove or replace to avoid skewing the results of
 our analysis. Finally, the time-stamp range is approximately a year with
 the earliest sale recorded in December 2010 and the latest one in
 December 2011.</p>
+<p><br />
+</p>
 <div id="first-pass" class="section level2">
 <h2>First pass</h2>
 <table>
@@ -1981,6 +1987,8 @@ to customers so negative quantities need to be factored out.
 Additionally, we have only kept entries whose product codes are of
 character length 5 or 6. That way our dataset will consists of actual
 products.</p>
+<p><br />
+</p>
 </div>
 <div id="second-pass" class="section level2">
 <h2>Second Pass</h2>
@@ -2215,6 +2223,8 @@ isolate and review. This check has returned zero entries so our product
 base is clean.</p>
 <pre><code>## # A tibble: 0 × 2
 ## # ℹ 2 variables: StockCode &lt;chr&gt;, Description &lt;chr&gt;</code></pre>
+<p><br />
+</p>
 </div>
 <div id="performance-by-country" class="section level2">
 <h2>Performance by Country</h2>
@@ -2234,6 +2244,8 @@ later in the supply chain planning process.</p>
 Revenue by Country
 </p>
 </div>
+<p><br />
+</p>
 </div>
 <div id="overall-trend" class="section level2">
 <h2>Overall trend</h2>
@@ -2249,6 +2261,8 @@ dataset better.</p>
 Time Series Distribution
 </p>
 </div>
+<p><br />
+</p>
 </div>
 <div id="product-grouping" class="section level2">
 <h2>Product Grouping</h2>
@@ -2328,7 +2342,9 @@ business’s top and bottom lines.</p>
 Sales Performance by Product Category
 </p>
 </div>
-<div style="page-break-after: always;"></div>
+<p><br />
+<br />
+</p>
 </div>
 </div>
 <div id="time-series-analysis" class="section level1">
@@ -2343,6 +2359,8 @@ including exponential smoothing via state space models.</p>
 <p>A lot of the code has been inspired or adapted from Rob J Hyndman’s
 the excellent online textbook on forecasting <a href="https://otexts.com/fpp3/">Forecasting Principles and Practice 3rd
 ed.</a>.</p>
+<p><br />
+</p>
 <div id="convert-into-a-tsibble-object" class="section level2">
 <h2>Convert into a tsibble object</h2>
 <p>To coerce a data frame to tsibble, we need to declare key and index.
@@ -2380,6 +2398,8 @@ out those outliers in the following steps.</p>
 AH Product Sales Trend
 </p>
 </div>
+<p><br />
+</p>
 </div>
 <div id="missing-values" class="section level2">
 <h2>Missing Values</h2>
@@ -2413,6 +2433,8 @@ have any further gaps in our data.</p>
 ##   ab_hl .gaps
 ##   &lt;chr&gt; &lt;lgl&gt;
 ## 1 AH    FALSE</code></pre>
+<p><br />
+</p>
 </div>
 <div id="outliers" class="section level2">
 <h2>Outliers</h2>
@@ -2445,7 +2467,9 @@ outliers. Below table show the output of this:</p>
 <p>As a final step, we have removed those outliers from the dataset and
 have used an Auto Regressive Integrated Moving Average (ARIMA) model
 from the fable package to replace them with interpolation.</p>
-<div style="page-break-after: always;"></div>
+<p><br />
+<br />
+</p>
 </div>
 </div>
 <div id="time-series-features" class="section level1">
@@ -2458,6 +2482,8 @@ outliers are no longer skewing the distribution of the series.</p>
 Normalised Time Series
 </p>
 </div>
+<p><br />
+</p>
 <div id="lag-plots" class="section level2">
 <h2>Lag Plots</h2>
 <p>Our time series is univariate, meaning there’s only one indipendent
@@ -2474,6 +2500,8 @@ which indicates the existence of a weekly seasonality.</p>
 Lagged Plots
 </p>
 </div>
+<p><br />
+</p>
 </div>
 <div id="autocorrelation" class="section level2">
 <h2>Autocorrelation</h2>
@@ -2510,6 +2538,8 @@ as the lags increase.</p>
 Autocorrelation Plot, lags = 84
 </p>
 </div>
+<p><br />
+</p>
 </div>
 <div id="stl-decomposition" class="section level2">
 <h2>STL Decomposition</h2>
@@ -2560,7 +2590,9 @@ Time Series Components Decomposition
 <p>Correctly identifying the components tha make our time series is an
 important step to produce good forecast by selecting the appropriate
 model which fits our data best.</p>
-<div style="page-break-after: always;"></div>
+<p><br />
+<br />
+</p>
 </div>
 </div>
 <div id="forecasting-methodology" class="section level1">
@@ -2597,6 +2629,8 @@ size 28. We’ve then created simulated forecasts from those series using
 the winning model from our previous step and measured our accuracy again
 over the online_store_validate datasets and compared with our previous
 result.</p>
+<p><br />
+</p>
 </div>
 <div id="define-loss-function" class="section level2">
 <h2>Define loss function</h2>
@@ -2604,6 +2638,8 @@ result.</p>
 MAPE is defined as:</p>
 <p><span class="math display">\[\text{Mean absolute percentage error:
 MAPE} = \text{mean}(|p_{t}|)\]</span></p>
+<p><br />
+</p>
 </div>
 <div id="forecasting-methods" class="section level2">
 <h2>Forecasting Methods</h2>
@@ -2640,6 +2676,8 @@ our benchmark.</p>
 ##   ab_hl .model  MAPE
 ##   &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;
 ## 1 AH    snaive  29.0</code></pre>
+<p><br />
+</p>
 </div>
 <div id="linear-regression" class="section level3">
 <h3>Linear Regression</h3>
@@ -2673,6 +2711,8 @@ the prediction intervals are narrower.</p>
 ##   ab_hl .model  MAPE
 ##   &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;
 ## 1 AH    lm      28.3</code></pre>
+<p><br />
+</p>
 </div>
 <div id="exponential-smoothing" class="section level3">
 <h3>Exponential Smoothing</h3>
@@ -2685,6 +2725,8 @@ observations get older. In other words, the more recent the observation
 the higher the associated weight. This framework generates reliable
 forecasts quickly and for a wide range of time series, which is a great
 advantage and of major importance to applications in industry.</p>
+<p><br />
+</p>
 <div id="simple-exponential-smoothing" class="section level4">
 <h4>Simple Exponential Smoothing</h4>
 <p>This method is suitable for forecasting data with no clear trend or
@@ -2730,6 +2772,8 @@ no surprise that we don’t have a good MAPE result in this case.</p>
 ##   ab_hl .model  MAPE
 ##   &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;
 ## 1 AH    ets     30.1</code></pre>
+<p><br />
+</p>
 </div>
 <div id="holts-exponential-smoothing" class="section level4">
 <h4>Holt’s Exponential Smoothing</h4>
@@ -2760,6 +2804,8 @@ better.</p>
 ##   ab_hl .model  MAPE
 ##   &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;
 ## 1 AH    ets     28.5</code></pre>
+<p><br />
+</p>
 </div>
 <div id="holt-winters-exponential-smoothing" class="section level4">
 <h4>Holt Winter’s Exponential Smoothing</h4>
@@ -2844,7 +2890,8 @@ algorithm.</p>
 ## 1 AH    ets_additive        20.6
 ## 2 AH    ets_multiplicative  20.3
 ## 3 AH    ets_damped          20.5</code></pre>
-<div style="page-break-after: always;"></div>
+<p><br />
+</p>
 </div>
 </div>
 </div>
@@ -2884,7 +2931,9 @@ Multistep Exponential Smoothing Forecasts with Damped Trend and
 Multiplicative Error and Seasonality
 </p>
 </div>
-<div style="page-break-after: always;"></div>
+<p><br />
+<br />
+</p>
 </div>
 </div>
 <div id="bootstrapping-forecast-bagging" class="section level1">
@@ -2930,6 +2979,8 @@ It took a couple of mutes to complete on a normal windows laptop with
 Simulated Forecasts from Bootsrapped Time Series
 </p>
 </div>
+<p><br />
+</p>
 </div>
 <div id="forecast-bagging" class="section level2">
 <h2>Forecast Bagging</h2>
@@ -2956,13 +3007,14 @@ dataset.</p>
 Bagged ETS Forecast vs Non Bootstrapped ETS vs Actual Sales Values
 </p>
 </div>
-<div style="page-break-after: always;"></div>
+<p><br />
+<br />
+</p>
 </div>
 </div>
 <div id="conclusion-and-further-discussion" class="section level1">
 <h1>Conclusion and further discussion</h1>
-<p>In this analysis, we have assumed the role of a data scientist,
-assigned with the task of developing a time series forecasting model of
+<p>In this analysis, we developed a time series forecasting model of
 <span class="math inline">\(h\)</span> = 28 time horizon. The dataset
 analysed was an extract from a UK online store’s sales database which
 contained a year’s worth of sales recorded for over three thousand items
@@ -3008,7 +3060,9 @@ as <strong>Non-Linear Regression</strong> and
 interaction between variables in the dataset as well as providing more
 sophisticated classification of product and potentially customer
 groups.</p>
-<div style="page-break-after: always;"></div>
+<p><br />
+<br />
+</p>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered"><strong>References</strong></h1>

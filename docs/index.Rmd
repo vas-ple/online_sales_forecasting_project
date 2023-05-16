@@ -51,9 +51,8 @@ download.file(url, destfile = tmp, mode="wb")
 online_store<- read_xlsx(tmp)
 
 ```
-
-
-\newpage
+\
+\
 
 # Introduction
 
@@ -108,7 +107,8 @@ We have seen a **marginal accuracy improvement** with a **MAPE = 24%**.
 This analysis relies heavily on the work of and tools developed by Professor [Rob J Hyndmand](https://robjhyndman.com/) and his team at the Department of Econometrics & Business Statistics, Monash University, Australia.
 A lot of the code and theory in this analysis has been adapted and inspired from the The [Forecasting Principles and Practice 3rd ed](https://otexts.com/fpp3/), online textbook produced by the same team.
 
-\newpage
+\
+\
 
 # Exploratory Analysis
 
@@ -125,6 +125,8 @@ An important observation is regarding the Quantity and Price fields.
 We can observe variances ranging from large negative values to equally large positive ones.
 These are potential ouliers that we'll later identify and either remove or replace to avoid skewing the results of our analysis.
 Finally, the time-stamp range is approximately a year with the earliest sale recorded in December 2010 and the latest one in December 2011.
+
+\
 
 ## First pass
 
@@ -215,6 +217,8 @@ online_store<- online_store %>%
 
 ```
 
+\
+
 ## Second Pass
 
 The new skimr output is a lot cleaner and something we can move into the next phase of our analysis.
@@ -236,6 +240,8 @@ online_store %>%
   filter(is.na(as.numeric(fivedig))) %>%
   distinct(StockCode, Description)
 ```
+
+\
 
 ## Performance by Country
 
@@ -280,6 +286,8 @@ online_store <-
   
 ```
 
+\
+
 ## Overall trend
 
 Figure 3 shows the time series distribution of our final dataset.
@@ -317,6 +325,8 @@ online_store %>%
   )
 
 ```
+
+\
 
 ## Product Grouping
 
@@ -425,7 +435,8 @@ online_store %>% glimpse()
 
 ```
 
-\newpage
+\
+\
 
 # Time Series Analysis
 
@@ -436,6 +447,8 @@ For the following part of out this report we will be using the [tidyverts](https
 [fable](https://fable.tidyverts.org/) : a collection of commonly used univariate and multivariate time series forecasting models including exponential smoothing via state space models.
 
 A lot of the code has been inspired or adapted from Rob J Hyndman's the excellent online textbook on forecasting [Forecasting Principles and Practice 3rd ed.](https://otexts.com/fpp3/).
+
+\
 
 ## Convert into a tsibble object
 
@@ -473,6 +486,8 @@ online_store_tsbl %>%
   autoplot() +
   geom_smooth(method = "lm", se = FALSE)
 ```
+
+\
 
 ## Missing Values
 
@@ -515,6 +530,8 @@ online_store_tsbl %>%
 online_store_gaps %>% has_gaps(.full = TRUE)
 
 ```
+
+\
 
 ## Outliers
 
@@ -565,7 +582,8 @@ online_store_clean <-
   interpolate(online_store_outliers)
 ```
 
-\newpage
+\
+\
 
 # Time Series Features
 
@@ -578,6 +596,8 @@ online_store_clean %>%
   geom_smooth(method = "lm", se = FALSE)
 
 ```
+
+\
 
 ## Lag Plots
 
@@ -599,6 +619,8 @@ lagged_sales %>%
   labs(x = "lag(Quantity, k)")
 
 ```
+
+\
 
 ## Autocorrelation
 
@@ -629,6 +651,8 @@ online_store_clean %>%
   autoplot()
 
 ```
+
+\
 
 ## STL Decomposition
 
@@ -666,7 +690,8 @@ online_store_clean %>%
 
 Correctly identifying the components tha make our time series is an important step to produce good forecast by selecting the appropriate model which fits our data best.
 
-\newpage
+\
+\
 
 # Forecasting Methodology
 
@@ -706,11 +731,15 @@ online_store_test <- online_store_fit %>%
 
 ```
 
+\
+
 ## Define loss function 
 
 We have chosen MAPE to evaluate the forecast accuracy of our model. MAPE is defined as:
 
 $$\text{Mean absolute percentage error: MAPE} = \text{mean}(|p_{t}|)$$
+
+\
 
 ## Forecasting Methods
 
@@ -757,6 +786,8 @@ fit_naive %>% refit(online_store_test) %>%
 
 ```
 
+\
+
 ### Linear Regression
 
 A Linear Regression model in its simplest case, allows for a linear relationship between the forecast variable $y$ and a single predictor variable $x$ [@sheather_2015] : $$y_t = \beta_0 + \beta_1 x_t + \varepsilon_t$$
@@ -798,12 +829,16 @@ fit_lm %>% refit(online_store_test) %>%
   select(ab_hl, .model, MAPE)
 ```
 
+\
+
 ### Exponential Smoothing
 
 Exponential smoothing was proposed in the late 1950s [@brown_1959], [@HOLT20045], [@winters_1960], and has motivated some of the most successful forecasting methods.
 Forecasts produced using exponential smoothing methods are weighted averages of past observations, with the weights decaying exponentially as the observations get older.
 In other words, the more recent the observation the higher the associated weight.
 This framework generates reliable forecasts quickly and for a wide range of time series, which is a great advantage and of major importance to applications in industry.
+
+\
 
 #### Simple Exponential Smoothing
 
@@ -854,6 +889,8 @@ fit_ses %>% refit(online_store_test) %>%
   select(ab_hl, .model, MAPE)
 ```
 
+\
+
 #### Holt's Exponential Smoothing
 
 Holt (1957) extended simple exponential smoothing to allow the forecasting of data with a trend.
@@ -894,6 +931,8 @@ fit_hes %>% refit(online_store_test) %>%
   accuracy() %>% 
   select(ab_hl, .model, MAPE)
 ```
+
+\
 
 #### Holt Winter's Exponential Smoothing
 
@@ -979,7 +1018,7 @@ fit_hwes %>% refit(online_store_test) %>%
   select(ab_hl, .model, MAPE)
 ```
 
-\newpage
+\
 
 ## Validation
 
@@ -1034,7 +1073,8 @@ fc<- fit %>%
 fc %>% autoplot(online_store_clean %>% filter(InvoiceDate >= "2011-08-01"))
 ```
 
-\newpage
+\
+\
 
 # Bootstrapping & Forecast Bagging
 
@@ -1099,6 +1139,8 @@ ets_forecasts %>%
 
 ```
 
+\
+
 ## Forecast Bagging
 
 One use for these bootstrapped time series is to improve forecast accuracy.
@@ -1132,11 +1174,12 @@ online_store_fit %>%
        y="Units Sold")
 ```
 
-\newpage
+\
+\
 
 # Conclusion and further discussion
 
-In this analysis, we have assumed the role of a data scientist, assigned with the task of developing a time series forecasting model of $h$ = 28 time horizon.
+In this analysis, we developed a time series forecasting model of $h$ = 28 time horizon.
 The dataset analysed was an extract from a UK online store's sales database which contained a year's worth of sales recorded for over three thousand items on a daily granularity level.
 Due to the large volume of independent time-series in the dataset, we've focused our efforts to products of **high revenue and large volume of orders** which have the majority of impact on both the company's top and bottom lines.
 After a thorough clean up of the dataset we've proceed with feature extraction from the time-series of trend and seasonal nature.
@@ -1154,7 +1197,8 @@ More specifically, our task was to forecast on a $h$ = 28 horizon, however a **t
 We've have used 3 of the most popular forecasting algorithms to generate our predictions, however it would be useful in future analysis to further test popular algorithms such as ARIMA, Prophet and TBATS.
 Additionally, our dataset was a multivariate one which we coerced into a univariate time series. More advanced machine learning techniques such as **Non-Linear Regression** and **Clustering** could have provided further insights on the interaction between variables in the dataset as well as providing more sophisticated classification of product and potentially customer groups.
 
-\newpage
+\
+\
 
 # **References**
 
