@@ -128,8 +128,8 @@ The latter is missing a significant percentage of it's values, so at this stage 
 
 An important observation is regarding the Quantity and Price fields.
 We can observe variances ranging from large negative values to equally large positive ones.
-These are potential ouliers that we'll later identify and either remove or replace to avoid skewing the results of our analysis.
-Finally, the timestamp range is approximately a year with the earliest sale recorded in December 2010 and the latest one in December 2011.
+These are potential outliers that I later identify and either remove or replace to avoid skewing the results of the analysis.
+Finally, the time-stamp range is approximately a year with the earliest sale recorded in December 2010 and the latest one in December 2011.
 
 ## First pass
 
@@ -138,9 +138,9 @@ Finally, the timestamp range is approximately a year with the earliest sale reco
 skim(online_store)
 ```
 
-We have examined the bottom 10 prices in the dataset.
+I examined the bottom 10 prices in the dataset.
 As expected the large negative values observed earlier are present here and they are not related to products, rather financial adjustments.
-There's also a number of products with zero prices, meaning they have contrbuted to the company's revenue.
+There's also a number of products with zero prices, meaning they have contributed to the company's revenue.
 
 ```{r bottom_10_prices, echo=FALSE}
 
@@ -156,7 +156,7 @@ online_store %>%
 slice_max(na.omit(UnitPrice),n=10, with_ties = F)
 ```
 
-Another important observation histogram that product codes (StockCode) appear to differentiate a lot, both in their formats and character length.
+Another important observation is that product codes (StockCode) appear to differentiate a lot, both in their formats and character length.
 Is there potentially a pattern that the majority of product codes follow?
 Figure 1, shows that the vast majority of codes follow a five character format, with a few codes being shorter and a few more longer than that.
 
@@ -168,7 +168,7 @@ online_store %>%
   geom_bar()
 ```
 
-We have first looked at the shorter length code and examine what products do they refer to.
+I first looked at the shorter length code and examine what products do they refer to.
 As expected they are not referring to actual products that can be traded.
 
 ```{r short_skucodes, echo=FALSE}
@@ -190,9 +190,9 @@ online_store %>%
   distinct(StockCode, Description) %>% head(10)
 ```
 
-Similarly, if we filter on the top 10 products based on Quantity.
+Similarly, if I filter on the top 10 products based on Quantity.
 We can identify the large value observed earlier.
-The first and second observations, although they refer to actual products and have contributed to the company's revenue (price \>0), they appear to have been one-offs.
+The first and second observations, although they refer to actual products and have contributed to the company's revenue (price \>0), they appear to have been one-off.
 We can confirm this since the next invoice of a priced product (573008), has a much lower quantity.
 
 ```{r top10_products_qty ,echo=FALSE}
@@ -201,12 +201,12 @@ online_store %>%
 slice_max(na.omit(Quantity), n=10)
 ```
 
-At this point we can start cleaning up some of these inconsistencies and review again what our data look like.
-Specifically we have filtered out any entries with prices less than zero.
+At this point I started cleaning up some of these inconsistencies and reviewed again what our data look like.
+Specifically I have filtered out any entries with prices less than zero.
 Entries with negative quantities have also been removed as they in general refer to product returns, stock adjustments or damaged stock.
-We are interested in forecasting the volume of stock that the business will need to deliver to customers so negative quantities need to be factored out.
-Additionally, we have only kept entries whose product codes are of character length 5 or 6.
-That way our dataset will consists of actual products.
+I am interested in forecasting the volume of stock that the business will need to deliver to customers so negative quantities need to be factored out.
+Additionally, I only kept entries whose product codes are of character length 5 or 6.
+That way the dataset consists of actual products.
 
 ```{r remove_outliers, echo=FALSE}
 online_store<- online_store %>%
@@ -222,7 +222,7 @@ online_store<- online_store %>%
 
 ## Second Pass
 
-The new skimr output is a lot cleaner and something we can move into the next phase of our analysis.
+The new skimr output is a lot cleaner and something I can move into the next phase of the analysis.
 
 ```{r examine_data2, echo=FALSE}
 
@@ -230,7 +230,7 @@ skim(online_store)
 
 ```
 
-A final check we need to do with regards to product codes is to check if we'd left in any with a character length 5 but of non-numeric type as the actual product codes are.
+A final check I need to do with regards to product codes is to check if we'd left in any with a character length 5 but of non-numeric type as the actual product codes are.
 We have used the str_sub() function from the Stringr package to isolate the first 5 characters (since 6 letter products still have a letter suffix to them), then temporarily coerced the output into a numeric class.
 The logic is that is non numeric product codes exist, the coercion will introduce NAs which will then isolate and review.
 This check has returned zero entries so our product base is clean.
