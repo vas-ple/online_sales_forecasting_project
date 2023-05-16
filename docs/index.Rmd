@@ -2,18 +2,12 @@
 title: "Online Sales Forecasting"
 author: "Vasileios Plessas"
 date: "08/03/2022"
-output:
-  html_document: default
-  pdf_document:
-    latex_engine: xelatex
-    df_print: default
-    number_sections: yes
-    toc: yes
-    fig_caption: yes
-    includes:
-bibliography: references.bib
-include-before: '`\newpage{}`{=latex}'
-urlcolor: blue
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    fig_caption: true
+bibliography: ../references.bib
 ---
  
 ```{r setup, include=FALSE}
@@ -336,10 +330,10 @@ For a toy company for example this could be a case where all plush toys are grou
 
 In our case and since we don't have any prior knowledge of these products we've decided to follow a two dimensional 80/20 rule and create an A,B - H,L product split based on Revenue and Order Volume.
 
-A = Products which make up the 80% of the company's revenue across the year.
-B = Products making the rest 20%
-H = Products which drive 80% of the orders (Invoices) 
-L = Products making up the rest 20%
+1) A = Products which make up the 80% of the company's revenue across the year.
+2) B = Products making the rest 20%
+3) H = Products which drive 80% of the orders (Invoices) 
+4) L = Products making up the rest 20%
 
 ```{r assign_categories, include=FALSE}
 
