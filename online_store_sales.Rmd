@@ -3,6 +3,7 @@ title: "Online Sales Forecasting"
 author: "Vasileios Plessas"
 date: "08/03/2022"
 output:
+  html_document: default
   pdf_document:
     latex_engine: xelatex
     df_print: default
@@ -10,7 +11,6 @@ output:
     toc: yes
     fig_caption: yes
     includes:
-  html_document: default
 bibliography: references.bib
 include-before: '`\newpage{}`{=latex}'
 urlcolor: blue
@@ -72,14 +72,14 @@ The predictability of an event or a quantity depends on several factors includin
 3)  How similar the future is to the past;
 4)  Whether the forecasts can affect the thing we are trying to forecast.
 
-In this project I am developed a **time series forecasting** model of $h$ = **28** forecasting horizon.
-The dataset analysed was an extract from a UK online store's sales database located in the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/online+retail) .
+The focus of this project is to develop a **time series forecasting** model of $h$ = **28** daily forecasting horizon of an on-line UK retailer.
+The dataset analysed was an extract from the online store's sales database located in the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/online+retail) .
 It contained a year's worth of sales recorded for over **three thousand items** on a **daily granularity level**.
-The time-series dataset was of a **multi-variate** nature which we then reduced into a **univariate** time-series in order to focus our analysis on a specific subset of the data.
+Our time-series dataset was of a **multi-variate** nature which we then reduced into a **univariate** time-series in order to focus our analysis on a specific subset of the data.
 
-The dataset contained a number of inconsistencies that needed to be normalised before commencing any the analysis, for example missing values, outliers, non-standardised product codes etc.
-For that reason, a significant part of this project has been devoted in **exploratory data analysis** and in **time-series analysis**.
-Due to the large number of independent time series in the dataset (over three thousand product codes), I decided to group teh data in **higher granularity** product categories based on a **two dimensional 80/20** rule. The new product hierarchy consisted of:
+The dataset contained a number of inconsistencies that needed to be normalised before we could commence our analysis, for example missing values, outliers, non-standardised product codes etc.
+For that reason, a significant part of this report has been devoted in **exploratory data analysis** and in **time-series analysis**.
+Due to the large number of independent time series in the dataset (over three thousand product codes), and to improve the quality of the forecast the data was grouped in **higher granularity** product categories based on a **two dimensional 80/20** rule. The new product hierarchy consisted of:
 
 1) A = Products which make up the 80% of the company's revenue across the year.
 2) B = Products making the rest 20%
@@ -87,28 +87,29 @@ Due to the large number of independent time series in the dataset (over three th
 3) H = Products which drive 80% of the orders (Invoices) 
 4) L = Products making up the rest 20%
 
-I have combined the above categories into a **two by two table** to review all combinations and isolated the products belonging in the **"AH"** intersection i.e., products of **high revenue** and **large volume of orders** which have the majority of impact on both the company's top and bottom lines.
-The time-series analysis helped to identify the **trend** and weekly **seasonality** pattern in the data.
-I have used those features to fine tune the algorithms used during the development of our model.
-Specifically, I've identified that there is an **upward additive trend** in the series and that sales tend to peak around the **middle of each week**.
+We have combined the above categories into a **two by two table** to review all combinations and isolated the products belonging in the **"AH"** intersection i.e., products of **high revenue** and **large volume of orders** which have the majority of impact on both the company's top and bottom lines.
 
-The methodology commenced by splitting our data into a **28 days** long dataset named **online_store_validate** which was reserved until the very end of the analysis to test the model's accuracy, and a fit dataset named **online_store_fit** which contains all data prior to the validation set.
-I have have further proceeded in splitting the online_store_fit data into **train and test** sets which where used to develop the model.
+A time-series analysis has helped us identify the **trend** and weekly **seasonality** pattern in our data.
+We have used those features to fine tune the algorithms used during the development of our model.
+Specifically, we've identified that there an **upward additive trend** in the series and that sales tend to peak around the **middle of each week**.
+
+The methodology commenced by splitting our data into a **28 days** long dataset named **online_store_validate** which was reserved until the very end of our analysis to test our model's accuracy, and a fit dataset named **online_store_fit** which contains all data prior to the validation set.
+We have further proceeded in splitting the online_store_fit data into **train and test** sets which will be used to develop our model.
 
 The algorithm with the **best performance** was recalculated over the **entire online_store_fit** dataset and produced **28 days of multi-step** forecasts to compare with the actual values in the validation set.
 
-I have used the **Mean Absolute Percentage Error (MAPE)** as the loss function. Percentage errors have the advantage of being unit-free, and so are frequently used to compare forecast performances between data sets [@hyndman_2021].
+The **Mean Absolute Percentage Error (MAPE)** was used as our loss function. Percentage errors have the advantage of being unit-free, and so are frequently used to compare forecast performances between data sets [@hyndman_2021].
 
-I then proceeded with a mathematical overview and application of the forecasting methods and their corresponding algorithms as well as examining the score results of each algorithm's performance over the test dataset.
-I provided a **visual representation** of the forecasts generated from the train set's **fitted values** as well as their **80% and 95% confidence intervals**.
+We then proceeded with a mathematical overview and application of the forecasting methods and their corresponding algorithms as well as examining the score results of each algorithm's performance over the test dataset.
+We have provided a **visual representation** of the forecasts generated from the train set's **fitted values** as well as their **80% and 95% confidence intervals**.
 
 The methods used were a) The **naive method** (SNAIVE) with a trend and seasonal component applied [@hyndman_2021] , b) **Linear Regression** (TSLM) with trend and seasonality components [@hyndman_2021], and c) the **Exponential Smoothing** algorithm in its **multiple versions** for trend and seasonality adjustments [@hyndman_2021].
 
 Exponential Smoothing and specifically the **Damped Trend** with multiplicative error and seasonality had outperformed all other methods by producing the smaller **MAPE = 25%** when tested and validated against hold-out part of our dataset reserved for that final estimation (online_store_validate).
 
-To ensure I haven't over fitted the model and that is generalised enough to produce unbiased forecasts based on new data, I have used **time series bootstrapping** to simulate **100 time series** and produced forecasts using the **Exponential Smoothing** algorithm [@BERGMEIR2016303].
-I then averaged the individual forecasts ("forecast bagging") and measured the accuracy against the **validation dataset**.
-I have observed a **marginal accuracy improvement** with a **MAPE = 24%** after this process.
+To ensure we haven't over fitted our model and that is generalised enough to produce unbiased forecasts based on new data, we have used **time series bootstrapping** to simulate **100 time series** and produced forecasts using the **Exponential Smoothing** algorithm [@BERGMEIR2016303].
+We then averaged the individual forecasts ("forecast bagging") and measured the accuracy vs the **validation dataset**.
+We have seen a **marginal accuracy improvement** with a **MAPE = 24%**.
 
 This analysis relies heavily on the work of and tools developed by Professor [Rob J Hyndmand](https://robjhyndman.com/) and his team at the Department of Econometrics & Business Statistics, Monash University, Australia.
 A lot of the code and theory in this analysis has been adapted and inspired from the The [Forecasting Principles and Practice 3rd ed](https://otexts.com/fpp3/), online textbook produced by the same team.
@@ -117,18 +118,18 @@ A lot of the code and theory in this analysis has been adapted and inspired from
 
 # Exploratory Analysis
 
-In this early stage of the exploratory analysis, I have used the [skimr](https://cran.r-project.org/web/packages/skimr/vignettes/skimr.html) package as way to quickly review different statistics about the dataset.
+In this early stage of our exploratory analysis, we have used the [skimr](https://cran.r-project.org/web/packages/skimr/vignettes/skimr.html) package as way to quickly review different statistics about our dataset.
 Skimr provides a frictionless approach to summary statistics which conforms to the "principle of least surprise", displaying summary statistics the user can skim quickly to understand their data.
 It handles different data types and returns a skim_df object which can be included in a pipeline or displayed nicely for the human reader.
 
-Based on Skimr's output we can see that our dataset consists of 541,909 rows and 8 columns in total and of types character, numeric and timestamp.
+Based on Skimr's output we can see that our dataset consists of 541,909 rows and 8 columns in total and of types character, numeric and time-stamp.
 More interestingly , Skimr informs us that a couple of fields are incomplete.
 Specifically the item description and CustomerID.
-The latter is missing a significant percentage of it's values, so at this stage I am flagging it as a candidate to be ignored in our further analysis.
+The latter is missing a significant percentage of it's values, so at this stage we are flagging it as a candidate to be ognored in our further analysis.
 
 An important observation is regarding the Quantity and Price fields.
 We can observe variances ranging from large negative values to equally large positive ones.
-These are potential outliers that I later identify and either remove or replace to avoid skewing the results of the analysis.
+These are potential ouliers that we'll later identify and either remove or replace to avoid skewing the results of our analysis.
 Finally, the time-stamp range is approximately a year with the earliest sale recorded in December 2010 and the latest one in December 2011.
 
 ## First pass
@@ -138,7 +139,7 @@ Finally, the time-stamp range is approximately a year with the earliest sale rec
 skim(online_store)
 ```
 
-I examined the bottom 10 prices in the dataset.
+We have examined the bottom 10 prices in the dataset.
 As expected the large negative values observed earlier are present here and they are not related to products, rather financial adjustments.
 There's also a number of products with zero prices, meaning they have contributed to the company's revenue.
 
@@ -156,7 +157,7 @@ online_store %>%
 slice_max(na.omit(UnitPrice),n=10, with_ties = F)
 ```
 
-Another important observation is that product codes (StockCode) appear to differentiate a lot, both in their formats and character length.
+Another important observation histogram that product codes (StockCode) appear to differentiate a lot, both in their formats and character length.
 Is there potentially a pattern that the majority of product codes follow?
 Figure 1, shows that the vast majority of codes follow a five character format, with a few codes being shorter and a few more longer than that.
 
@@ -168,7 +169,7 @@ online_store %>%
   geom_bar()
 ```
 
-I first looked at the shorter length code and examine what products do they refer to.
+We have first looked at the shorter length code and examine what products do they refer to.
 As expected they are not referring to actual products that can be traded.
 
 ```{r short_skucodes, echo=FALSE}
@@ -190,9 +191,9 @@ online_store %>%
   distinct(StockCode, Description) %>% head(10)
 ```
 
-Similarly, if I filter on the top 10 products based on Quantity.
+Similarly, if we filter on the top 10 products based on Quantity.
 We can identify the large value observed earlier.
-The first and second observations, although they refer to actual products and have contributed to the company's revenue (price \>0), they appear to have been one-off.
+The first and second observations, although they refer to actual products and have contributed to the company's revenue (price \>0), they appear to have been one-offs.
 We can confirm this since the next invoice of a priced product (573008), has a much lower quantity.
 
 ```{r top10_products_qty ,echo=FALSE}
@@ -201,12 +202,12 @@ online_store %>%
 slice_max(na.omit(Quantity), n=10)
 ```
 
-At this point I started cleaning up some of these inconsistencies and reviewed again what our data look like.
-Specifically I have filtered out any entries with prices less than zero.
+At this point we can start cleaning up some of these inconsistencies and review again what our data look like.
+Specifically we have filtered out any entries with prices less than zero.
 Entries with negative quantities have also been removed as they in general refer to product returns, stock adjustments or damaged stock.
-I am interested in forecasting the volume of stock that the business will need to deliver to customers so negative quantities need to be factored out.
-Additionally, I only kept entries whose product codes are of character length 5 or 6.
-That way the dataset consists of actual products.
+We are interested in forecasting the volume of stock that the business will need to deliver to customers so negative quantities need to be factored out.
+Additionally, we have only kept entries whose product codes are of character length 5 or 6.
+That way our dataset will consists of actual products.
 
 ```{r remove_outliers, echo=FALSE}
 online_store<- online_store %>%
@@ -222,7 +223,7 @@ online_store<- online_store %>%
 
 ## Second Pass
 
-The new skimr output is a lot cleaner and something I can move into the next phase of the analysis.
+The new skimr output is a lot cleaner and something we can move into the next phase of our analysis.
 
 ```{r examine_data2, echo=FALSE}
 
@@ -230,9 +231,9 @@ skim(online_store)
 
 ```
 
-A final check I need to do with regards to product codes is to check if we'd left in any with a character length 5 but of non-numeric type as the actual product codes are.
+A final check we need to do with regards to product codes is to check if we'd left in any with a character length 5 but of non-numeric type as the actual product codes are.
 We have used the str_sub() function from the Stringr package to isolate the first 5 characters (since 6 letter products still have a letter suffix to them), then temporarily coerced the output into a numeric class.
-The logic is that is non numeric product codes exist, the coercion will introduce NAs which will then isolate and review.
+The logic is that is non numeric product codes exist, the coercion will introduce NA which will then isolate and review.
 This check has returned zero entries so our product base is clean.
 
 ```{r last_code_check, echo=FALSE}
@@ -245,7 +246,7 @@ online_store %>%
 ## Performance by Country
 
 Another interesting distribution to examine is that of revenue by country (see Figure 2).
-UK sales dominate our market spread, which is natural since our company is a UK online store.
+UK sales dominate our market spread, which is natural since our company is a UK on-line store.
 To ensure we reduce potentially variability in the sales data used in our analysis due to different buying patterns across countries, we will focus only on UK sales.
 Furthermore, we will remove the suffix letter from the six character length products identified earlier and aggregate all variations against their parent 5 letter code.
 Assortment mix planning is beyond the scope of this analysis and it is usually handled much later in the supply chain planning process.
@@ -337,8 +338,8 @@ In our case and since we don't have any prior knowledge of these products we've 
 
 A = Products which make up the 80% of the company's revenue across the year.
 B = Products making the rest 20%
-
-H = Products which drive 80% of the orders (Invoices) L = Products making up the rest 20%
+H = Products which drive 80% of the orders (Invoices) 
+L = Products making up the rest 20%
 
 ```{r assign_categories, include=FALSE}
 
@@ -366,10 +367,10 @@ After assigning the those categories we have used the table() function to create
 Out `r  n_distinct(online_store$product_code)` , 716 (AH) of them are driving 80% of the company's revenue and orders.
 These are items that have an immediate impact both on the top line but also on the bottom line as a high order volume could incur large supply chain costs in order to successfully meet that customer demand.
 
-There is a small number of products (AL) that also contribute to the 80% revenue baseline but they don't have a large numebr of orders agaisnt them.
+There is a small number of products (AL) that also contribute to the 80% revenue baseline but they don't have a large number of orders against them.
 We can assume that these are high price point items or potentially infrequent bulk orders of items.
 
-Perharps from a business perspective the items that will need to reviewed by management are the ones belonging to the BH category.
+Perhaps from a business perspective the items that will need to reviewed by management are the ones belonging to the BH category.
 That is products that drive a large number of orders but they only have minimal contribution to the revenue baseline.
 These products could significantly increase supply chain costs and can potentially have an impact on the company's bottom-line.
 
@@ -1162,5 +1163,4 @@ Additionally, our dataset was a multivariate one which we coerced into a univari
 \newpage
 
 # **References**
-
 
